@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  whisper:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - .:/work
+    environment:
+      - PULSE_SERVER=tcp:host.docker.internal
+      - PULSE_SOURCE=${PULSE_SOURCE}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
